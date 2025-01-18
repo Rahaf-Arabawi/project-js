@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            background: #640ac4;
+            background: -webkit-linear-gradient(to right, #640ac4, #b16ff8);
+            background: linear-gradient(to right, #640ac4, #b16ff8);
+            padding: 0.5rem 1rem; /* تقليل حجم النافبار */
+        }
+
+        .navbar-logo {
+            max-height: 40px; /* تحديد أقصى ارتفاع للوجو */
+            width: auto; /* الحفاظ على نسبة العرض إلى الارتفاع */
+        }
+
+        .sidebar {
+            background-color: #ffffff;
+            height: 100vh;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar a {
+            color: #640ac4;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover {
+            color: #b16ff8;
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+
+        .btn-primary {
+            background: #640ac4;
+            background: -webkit-linear-gradient(to right, #640ac4, #b16ff8);
+            background: linear-gradient(to right, #640ac4, #b16ff8);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #b16ff8;
+            background: -webkit-linear-gradient(to right, #b16ff8, #640ac4);
+            background: linear-gradient(to right, #b16ff8, #640ac4);
+        }
+
+        .project-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-item .btn-group {
+            display: flex;
+            gap: 5px;
+        }
+
+        .task-item .btn-group button {
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+        .highlighted {
+            background-color: orange;
+        }
+
+        /* إخفاء السايد بار على الشاشات الصغيرة */
+        @media (max-width: 991.98px) {
+            .sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <!-- اللوجو -->
+            <a class="navbar-brand" href="#">
+                <img src="jsplogo.png" alt="FOCUS FLOW" class="navbar-logo">
+            </a>
+    
+            <!-- زر القائمة المنبثقة -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <!-- محتويات السايد بار -->
+            <div class="collapse navbar-collapse" id="sidebarContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-between w-100">
+                    <!-- User Info -->
+                    <li class="nav-item">
+                        <h5 id="user-fullname" class="mb-0"></h5>
+                        <small id="user-email" class="text-muted"></small>
+                    </li>
+    
+                    <!-- Quick Links -->
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#addProjectModal">
+                            <i class="fas fa-plus me-2"></i>Add New Project
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" id="settings-link">
+                            <i class="fas fa-cog me-2"></i>Settings
+                        </a>
+                    </li>
+    
+                    <!-- Task Filters -->
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" id="urgent-tasks-link">
+                            <i class="fas fa-filter me-2"></i>Show Urgent Tasks
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" id="completed-tasks-link">
+                            <i class="fas fa-check-circle me-2"></i>Show Completed Tasks
+                        </a>
+                    </li>
+    
+                    <!-- Logout -->
+                    <li class="nav-item">
+                        <a href="#" class="nav-link text-danger" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt me-2"></i>Log Out
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-12 col-md-2 p-0 sidebar">
+                <div class="p-3">
+                    <!-- User Info -->
+                    <div class="mb-4">
+                        <h5 id="user-fullname" class="mb-0"></h5>
+                        <small id="user-email" class="text-muted"></small>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <ul class="list-unstyled ps-0">
+                        <li class="mb-2">
+                            <a href="#" class="d-block py-2" data-bs-toggle="modal" data-bs-target="#addProjectModal">
+                                <i class="fas fa-plus me-2"></i>Add New Project
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="d-block py-2" id="settings-link">
+                                <i class="fas fa-cog me-2"></i>Settings
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Task Filters -->
+                    <ul class="list-unstyled ps-0">
+                        <li class="border-top my-3"></li>
+                        <li class="mb-2">
+                            <a href="#" class="d-block py-2" id="completed-tasks-link">
+                                <i class="fas fa-filter me-2"></i>Show Urgent Tasks
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" id="completed-tasks-link">
+                                <i class="fas fa-check-circle me-2"></i>Show Completed Tasks
+                            </a>
+                        </li>
+                    </ul>
+
+
+                    <!-- Logout -->
+                    <ul class="list-unstyled ps-0">
+                        <li class="border-top my-3"></li>
+                        <li class="mb-2">
+                            <a href="#" class="d-block py-2 text-danger" id="sidebar-logout">
+                                <i class="fas fa-sign-out-alt me-2"></i>Log Out
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-12 col-md-9 p-4 main-content">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Projects</h2>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProjectModal">
+                        <i class="fas fa-plus"></i> Add New Project
+                    </button>
+                </div>
+
+                <!-- Project List -->
+                <div id="project-list-container" class="mt-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Project Modal -->
+    <div class="modal fade" id="addProjectModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Project Info</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="project-name-form">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control mt-2" id="project-name" placeholder="Project Name">
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="date" class="form-control" id="start-date" placeholder="Start Date">
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="date" class="form-control" id="end-date" placeholder="End Date">
+                        </div>
+                    </form>
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form id="add-task-form">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="task-input" placeholder="Add new task">
+                                            <button class="btn btn-primary" type="submit">Add</button>
+                                        </div>
+                                    </form>
+                                    <ul class="list-group" id="task-list">
+                                        <!-- Tasks will be dynamically appended here -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="save-project-btn">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Project Confirmation Modal -->
+    <div class="modal fade" id="deleteProjectModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Project</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this project? This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirm-delete-btn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Project Name Modal -->
+    <div class="modal fade" id="editProjectModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Project Name</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control" id="edit-project-name" placeholder="New Project Name">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirm-edit-btn">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Task Name Modal -->
+    <div class="modal fade" id="editTaskModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Task Name</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control" id="edit-task-name" placeholder="New Task Name">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirm-task-edit-btn">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Completed Tasks Modal -->
+    <div class="modal fade" id="completedTasksModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Completed Tasks</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group" id="completed-tasks-list">
+                        <!-- Completed tasks will be dynamically appended here -->
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Retrieve the logged-in user's email from localStorage
+        const loggedInUser = localStorage.getItem("loggedInUser");
+
+        // Redirect to login page if no user is logged in
+        if (!loggedInUser) {
+            window.location.href = "index.html";
+        }
+
+        // Retrieve all projects from localStorage
+        let projects = JSON.parse(localStorage.getItem("projects")) || [];
+
+        // Filter projects to show only those belonging to the logged-in user
+        let userProjects = projects.filter(project => project.user === loggedInUser);
+
+        // Retrieve all users from localStorage
+        const users = JSON.parse(localStorage.getItem("users")) || [];
+
+        // Find the logged-in user's details
+        const currentUser = users.find(user => user.email === loggedInUser);
+
+        // Display user's full name and email in the sidebar
+        if (currentUser) {
+            document.getElementById("user-fullname").textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+            document.getElementById("user-email").textContent = currentUser.email;
+        }
+
+        // Logout functionality
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            localStorage.removeItem("loggedInUser");
+            window.location.href = "index.html";
+        });
+
+        // Logout from sidebar
+        document.getElementById("sidebar-logout").addEventListener("click", () => {
+            localStorage.removeItem("loggedInUser");
+            window.location.href = "index.html";
+        });
+
+        // Settings link functionality
+        document.getElementById("settings-link").addEventListener("click", () => {
+            alert("Settings page will be implemented soon!");
+        });
+
+        // Urgent tasks link functionality
+        document.getElementById("urgent-tasks-link").addEventListener("click", () => {
+            alert("Showing urgent tasks...");
+        });
+
+        // Completed tasks link functionality
+        document.getElementById("completed-tasks-link").addEventListener("click", () => {
+            showCompletedTasksModal();
+        });
+
+        // Function to show completed tasks in a modal
+        function showCompletedTasksModal() {
+            const completedTasksList = document.getElementById("completed-tasks-list");
+            completedTasksList.innerHTML = ""; // Clear previous content
+
+            userProjects.forEach(project => {
+                project.completedTasks.forEach(task => {
+                    const taskItem = document.createElement("li");
+                    taskItem.className = "list-group-item";
+                    taskItem.textContent = `${task} (Project: ${project.name})`;
+                    completedTasksList.appendChild(taskItem);
+                });
+            });
+
+            const completedTasksModal = new bootstrap.Modal(document.getElementById("completedTasksModal"));
+            completedTasksModal.show();
+        }
+
+        // Add Task functionality
+        document.getElementById("add-task-form").addEventListener("submit", (event) => {
+            event.preventDefault();
+            const taskInput = document.getElementById("task-input");
+            const taskName = taskInput.value.trim();
+
+            if (taskName) {
+                const taskList = document.getElementById("task-list");
+                const taskItem = document.createElement("li");
+                taskItem.className = "task-item";
+                taskItem.innerHTML = `
+                    <span class="task-name">${taskName}</span>
+                    <div class="btn-group">
+                        <button class="btn btn-danger btn-sm delete-btn">&#x2715;</button>
+                    </div>
+                `;
+                taskList.appendChild(taskItem);
+                taskInput.value = "";
+
+                // Add event listener to the delete button
+                const deleteBtn = taskItem.querySelector(".delete-btn");
+                deleteBtn.addEventListener("click", () => {
+                    taskItem.remove();
+                });
+            }
+        });
+
+        // Save Project functionality
+        document.getElementById("save-project-btn").addEventListener("click", () => {
+            const projectName = document.getElementById("project-name").value.trim();
+            const startDate = document.getElementById("start-date").value;
+            const endDate = document.getElementById("end-date").value;
+            const tasks = Array.from(document.querySelectorAll("#task-list .task-name")).map(task => task.textContent);
+
+            if (projectName && startDate && endDate) {
+                const newProject = {
+                    name: projectName,
+                    startDate: startDate,
+                    endDate: endDate,
+                    tasks: tasks,
+                    completedTasks: [],
+                    user: loggedInUser
+                };
+
+                // Retrieve existing projects from localStorage
+                let projects = JSON.parse(localStorage.getItem("projects")) || [];
+                projects.push(newProject);
+                localStorage.setItem("projects", JSON.stringify(projects));
+
+                // Close the modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById("addProjectModal"));
+                modal.hide();
+
+                // Clear the form
+                document.getElementById("project-name").value = "";
+                document.getElementById("start-date").value = "";
+                document.getElementById("end-date").value = "";
+                document.getElementById("task-list").innerHTML = "";
+
+                // Render the updated projects
+                userProjects = projects.filter(project => project.user === loggedInUser);
+                renderProjects();
+            } else {
+                alert("Please fill in all fields (Project Name, Start Date, End Date).");
+            }
+        });
+
+        // Function to render projects
+        function renderProjects() {
+            const projectListContainer = document.getElementById("project-list-container");
+
+            if (userProjects.length === 0) {
+                projectListContainer.innerHTML = "<p>No projects found.</p>";
+            } else {
+                projectListContainer.innerHTML = userProjects.map(project => `
+                    <div class="project-card" data-project-name="${project.name}">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h4 class="project-title">${project.name}</h4>
+                            <div>
+                                <button class="btn btn-sm btn-primary edit-project-btn" data-bs-toggle="modal" data-bs-target="#editProjectModal" data-project-name="${project.name}"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-danger delete-project-btn" data-bs-toggle="modal" data-bs-target="#deleteProjectModal" data-project-name="${project.name}"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <p><strong>Start Date:</strong> ${project.startDate}</p>
+                        <p><strong>End Date:</strong> ${project.endDate}</p>
+                        <div>
+                            <h5>Tasks</h5>
+                            <div id="uncompleted-${project.name}" class="uncompleted-tasks">
+                                <ul class="task-list">
+                                    ${project.tasks.map(task => `
+                                        <li class="task-item">
+                                            <span class="task-name">${task}</span>
+                                            <div class="btn-group">
+                                                <button class="btn btn-danger btn-sm delete-btn">&#x2715;</button>
+                                                <button class="btn btn-primary btn-sm edit-btn" data-bs-toggle="modal" data-bs-target="#editTaskModal" data-task-name="${task}">&#9998;</button>
+                                                <button class="btn btn-warning btn-sm highlight-btn">Highlight</button>
+                                                <button class="btn btn-success btn-sm complete-btn">Complete</button>
+                                            </div>
+                                        </li>
+                                    `).join("")}
+                                </ul>
+                            </div>
+                            <h5>Completed Tasks</h5>
+                            <div id="completed-${project.name}" class="completed-tasks">
+                                <ul class="task-list">
+                                    ${project.completedTasks.map(task => `
+                                        <li class="task-item">
+                                            <span class="task-name">${task}</span>
+                                            <div class="btn-group">
+                                                <button class="btn btn-danger btn-sm delete-btn">&#x2715;</button>
+                                                <button class="btn btn-primary btn-sm edit-btn" data-bs-toggle="modal" data-bs-target="#editTaskModal" data-task-name="${task}">&#9998;</button>
+                                                <button class="btn btn-warning btn-sm highlight-btn">Highlight</button>
+                                                <button class="btn btn-success btn-sm complete-btn">Not Complete</button>
+                                            </div>
+                                        </li>
+                                    `).join("")}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `).join("");
+
+                // Attach event listeners to task buttons
+                attachTaskEventListeners();
+
+                // Attach event listeners to delete project buttons
+                attachDeleteProjectEventListeners();
+
+                // Attach event listeners to edit project buttons
+                attachEditProjectEventListeners();
+
+                // Attach event listeners to edit task buttons
+                attachEditTaskEventListeners();
+            }
+        }
+
+        // Function to attach event listeners to task buttons
+        function attachTaskEventListeners() {
+            const taskItems = document.querySelectorAll(".task-item");
+
+            taskItems.forEach(taskItem => {
+                const deleteBtn = taskItem.querySelector(".delete-btn");
+                const highlightBtn = taskItem.querySelector(".highlight-btn");
+                const completeBtn = taskItem.querySelector(".complete-btn");
+
+                // Delete Task
+                deleteBtn.addEventListener("click", () => {
+                    const taskName = taskItem.querySelector(".task-name").textContent;
+                    const projectDiv = taskItem.closest(".project-card");
+                    const projectName = projectDiv.getAttribute("data-project-name");
+                    const project = projects.find(p => p.name === projectName);
+
+                    if (project) {
+                        project.tasks = project.tasks.filter(task => task !== taskName);
+                        project.completedTasks = project.completedTasks.filter(task => task !== taskName);
+                        localStorage.setItem("projects", JSON.stringify(projects));
+                        renderProjects();
+                    }
+                });
+
+                // Highlight Task
+                highlightBtn.addEventListener("click", () => {
+                    taskItem.classList.toggle("highlighted");
+                });
+
+                // Complete Task
+                completeBtn.addEventListener("click", () => {
+                    const taskName = taskItem.querySelector(".task-name").textContent;
+                    const projectDiv = taskItem.closest(".project-card");
+                    const projectName = projectDiv.getAttribute("data-project-name");
+                    const project = projects.find(p => p.name === projectName);
+
+                    if (project) {
+                        if (completeBtn.textContent === "Complete") {
+                            // Move task to completed tasks
+                            project.tasks = project.tasks.filter(task => task !== taskName);
+                            project.completedTasks.push(taskName);
+                            completeBtn.textContent = "Not Complete";
+                        } else {
+                            // Move task back to active tasks
+                            project.completedTasks = project.completedTasks.filter(task => task !== taskName);
+                            project.tasks.push(taskName);
+                            completeBtn.textContent = "Complete";
+                        }
+                        localStorage.setItem("projects", JSON.stringify(projects));
+                        renderProjects();
+                    }
+                });
+            });
+        }
+
+        // Function to attach event listeners to delete project buttons
+        function attachDeleteProjectEventListeners() {
+            const deleteProjectBtns = document.querySelectorAll(".delete-project-btn");
+
+            deleteProjectBtns.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const projectName = btn.getAttribute("data-project-name");
+                    const projectIndex = projects.findIndex(p => p.name === projectName);
+
+                    if (projectIndex !== -1) {
+                        // Show confirmation modal
+                        const deleteModal = new bootstrap.Modal(document.getElementById("deleteProjectModal"));
+                        deleteModal.show();
+
+                        // Handle confirm delete
+                        document.getElementById("confirm-delete-btn").addEventListener("click", () => {
+                            projects.splice(projectIndex, 1);
+                            localStorage.setItem("projects", JSON.stringify(projects));
+                            deleteModal.hide();
+                            renderProjects(); // Re-render the projects after deletion
+                        }, { once: true }); // Ensure the event listener is added only once
+                    }
+                });
+            });
+        }
+
+        // Function to attach event listeners to edit project buttons
+        function attachEditProjectEventListeners() {
+            const editProjectBtns = document.querySelectorAll(".edit-project-btn");
+
+            editProjectBtns.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const projectName = btn.getAttribute("data-project-name");
+                    const project = projects.find(p => p.name === projectName);
+
+                    if (project) {
+                        document.getElementById("edit-project-name").value = project.name;
+                        const editModal = new bootstrap.Modal(document.getElementById("editProjectModal"));
+                        editModal.show();
+
+                        document.getElementById("confirm-edit-btn").addEventListener("click", () => {
+                            const newProjectName = document.getElementById("edit-project-name").value.trim();
+                            if (newProjectName) {
+                                project.name = newProjectName;
+                                localStorage.setItem("projects", JSON.stringify(projects));
+                                editModal.hide();
+                                renderProjects(); // Re-render the projects after editing
+                            }
+                        }, { once: true }); // Ensure the event listener is added only once
+                    }
+                });
+            });
+        }
+
+        // Function to attach event listeners to edit task buttons
+        function attachEditTaskEventListeners() {
+            const editTaskBtns = document.querySelectorAll(".edit-btn");
+
+            editTaskBtns.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const taskName = btn.getAttribute("data-task-name");
+                    const projectDiv = btn.closest(".project-card");
+                    const projectName = projectDiv.getAttribute("data-project-name");
+                    const project = projects.find(p => p.name === projectName);
+
+                    if (project) {
+                        document.getElementById("edit-task-name").value = taskName;
+                        const editModal = new bootstrap.Modal(document.getElementById("editTaskModal"));
+                        editModal.show();
+
+                        document.getElementById("confirm-task-edit-btn").addEventListener("click", () => {
+                            const newTaskName = document.getElementById("edit-task-name").value.trim();
+                            if (newTaskName) {
+                                project.tasks = project.tasks.map(task => task === taskName ? newTaskName : task);
+                                project.completedTasks = project.completedTasks.map(task => task === taskName ? newTaskName : task);
+                                localStorage.setItem("projects", JSON.stringify(projects));
+                                editModal.hide();
+                                renderProjects(); // Re-render the projects after editing
+                            }
+                        }, { once: true }); // Ensure the event listener is added only once
+                    }
+                });
+            });
+        }
+
+        // Render projects on page load
+        renderProjects();
+    </script>
+</body>
+</html>
