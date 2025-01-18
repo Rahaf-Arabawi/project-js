@@ -1,11 +1,230 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-</head>
-<body>
-    
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Task Manager</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="icon" type="image/x-icon" href="favicon.png" />
+    <link rel="stylesheet" href="home.css" />
+  </head>
+  <body>
+    <div>
+      <nav id="navfixd" class="navbar navbar-expand-lg">
+        <a class="navbar-brand"><img id="logo" src="namelogo.png" alt="" /></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbar"
+          aria-controls="navbar"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbar">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#Features">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#team">Our Team</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">Contact</a>
+            </li>
+          </ul>
+          <button
+            class="btn btn-outline-light ml-3"onclick="navigateToLogin()"> Login</button>
+        </div>
+      </nav>
+    </div>
+    <section id="header-content">
+      <header>
+        <div class="header-content">
+          <h1>Welcome to <span id="scolor">Focus Flow</span></h1>
+          <h5>
+            Managing tasks through each stage from start to finish while<br />
+            ensuring the required time commitment is met.
+          </h5>
+          <button onclick="navigateToPage()" class="btn btn-primary">
+            Sign Up-it's free
+          </button>
+        </div>
+        <img id="headerpic" src="headerpic.png"/>
+      </header>
+    </section>
+
+    <section id="Features" class="section bg-light py-5">
+      <div class="container" class="row">
+        <h1 id="obicte" class="text-center">From <span class="color">"To-Do" to "Done"</span></h1>
+        <p id="obicte1" class="text-center">
+          Focus Flow streamlines task management, keeping you organized and
+          efficient.<br />
+          It helps you move seamlessly from "To-Do" to "Done" with ease, whether
+          you're <br />
+          managing personal tasks or collaborating with a team
+        </p>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="col-md-12 col-sm-6 mb-4">
+              <div class="cardf">
+                <h4 class="color">Simple Task Managemen</h4>
+                <p>
+                  Easy Task Addition and Editing: Users can quickly add and edit
+                  tasks.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-12 col-sm-6 mb-4">
+              <div class="cardf">
+                <h4 class="color">Task Completion Tracking</h4>
+                <p>
+                  Completed and Incomplete Task Management: Organize tasks to
+                  track progress between completed and incomplete tasks.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-12 col-sm-6 mb-4">
+              <div class="cardf">
+                <h4 class="color">Effortless Project Navigation</h4>
+                <p>
+                  Easy Navigation Between Projects: Quickly and easily navigate
+                  between projects, with tasks displayed for each project.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Swiper Container Next to Education Section -->
+          <div class="col-md-6">
+            <swiper-container
+              class="mySwiper"
+              direction="vertical"
+              pagination="true"
+              pagination-clickable="true"
+            >
+              <swiper-slide>
+                <div class="cards p-3">
+                  <img id="iwd" src="3.png" alt="Italian Trulli" />
+                </div>
+              </swiper-slide>
+              <swiper-slide>
+                <div class="cards p-3">
+                  <img id="iwd" src="2.png" alt="Italian Trulli" />
+                </div>
+              </swiper-slide>
+              <swiper-slide>
+                <div class="cards p-3">
+                  <img id="iwd" src="1.png" alt="Italian Trulli" />
+                </div>
+              </swiper-slide>
+            </swiper-container>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="team" class="section py-5">
+      <div class="container">
+        <h2 class="text-center">Our Team</h2>
+        <div class="row">
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card">
+              <h3><a href="https://github.com/Rahaf-Arabawi" target="_blank">Rahaf Aqrabawi</a></h3>
+              <p>The Project Manager oversees the project, managing timelines, resources, and team communication to ensure it meets deadlines and stays within budget.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card">
+              <h3><a href="https://github.com/hamedkrishan" target="_blank">Hamed Abu-Hilaleh</a></h3>
+              <img src="" alt="" />
+              <p>The QA Tester identifies bugs and ensures functionality, while the Backend and Frontend Developers handle server-side logic, databases, APIs, and build the website's visual and interactive elements.</p>
+            </div>
+          </div>
+         
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div  class="card">
+              <h3><a href="https://github.com/mohalomari0" target="_blank">Mohamed Al-omari</a></h3>
+              <p>The Backend Developer handles server-side logic, databases, and APIs, while the Frontend Developer builds the website's visual and interactive elements using HTML, CSS, JavaScript</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card">
+              <h3><a href="https://github.com/jenan1234" target="_blank">Jenan Dweib</a> </h3>
+              <p>The UI/UX Designer creates an intuitive, visually appealing interface and conducts user research to enhance usability.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section py-5">
+      <div class="container">
+        <h2 class="text-center">Contact Us</h2>
+        <form class="p-3" style="max-width: 600px; margin: auto">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea
+              id="message"
+              name="message"
+              class="form-control"
+              rows="4"
+              required
+            ></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Send</button>
+        </form>
+      </div>
+    </section>
+
+    <footer>
+      <p>&copy; 2025 Orange Coding Academy</p>
+      <div class="social-icons">
+        <a href="https://www.linkedin.com" target="_blank">
+          <i class="fab fa-linkedin fa-2x"></i>
+        </a>
+        <a href="https://github.com" target="_blank">
+          <i class="fab fa-github fa-2x"></i>
+        </a>
+      </div>
+    </footer>
+    <button id="scrollToTopBtn">↑</button>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+    <script src="home.js"></script>
+  </body>
 </html>
