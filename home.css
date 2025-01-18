@@ -1,0 +1,280 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: #f0f0f0;
+}
+
+/* Header */
+header {
+    background-color: #7e01cc;
+    color: white;
+    padding: 100px 200px;
+    height: 600px;
+    justify-content:space-between;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+
+}
+
+header h1 {
+    font-size: 2rem;
+}
+#scolor{
+    color: #02fe9d;
+
+}
+
+header .btn {
+    background-color: #a061ff;
+    color: white;
+    margin-top: 80px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 20px;
+}
+
+header .btn:hover {
+    background-color: #b30083;
+}
+#headerpic{
+   width: 400px; /* يمكنك تعديل الحجم حسب الحاجة */
+    margin-left: 50px;
+
+}
+
+/* Cards */
+
+#obicte{
+
+    padding: 50px;
+} 
+.color{
+    color: #b812aa;
+    
+} 
+
+
+#obicte1 {
+
+    font-size: 20px;
+    padding-bottom: 80px ;
+}
+
+
+
+
+.cardf {
+    background-color: #fff;
+    padding: 3px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+   
+}
+.card{
+    background-color: #fff;
+    padding: 10px;
+    margin: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    justify-content: center;
+    align-items: center;
+   
+}
+
+.cardf.p{
+    font-size: 02px;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.cardf:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    border-left: 6px solid #b30083;
+}
+
+/* Navbar */
+
+.navbar-nav .nav-link:hover {
+    color: #ff6f61;
+    background-color: #0056b3;
+    border-radius: 4px;
+}
+#navbar{
+    display: flex;
+    align-items: center;
+    justify-content:space-around;
+}
+.navbar-nav .nav-link {
+    color: white; 
+    transition: color 0.3s ease, background-color 0.3s ease;
+    margin-right: 100px;
+}
+
+
+
+/* Buttons */
+.btn-outline-light {
+   
+      background: #640ac4;
+        background: -webkit-linear-gradient(to right, #640ac4, #b16ff8);
+        background: linear-gradient(to right, #640ac4, #b16ff8)
+      
+}
+
+.btn-outline-light:hover {
+    background: #b30083;
+    color: white;
+}
+
+/* Fixed Navbar */
+#navfixd {
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    background-color: #9d02fe;
+    
+}
+
+/* Logo */
+#logo {
+    border-radius: 80px;
+    width: 250px;
+    padding-left: 50px;
+}
+
+/* Swiper */
+.mySwiper {
+    width: 100%;
+    height: 350px;
+}
+
+.mySwiper .cards {
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    height: 485px;
+}
+.cards:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+.cards{
+    background-color: #fff;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+   
+}
+#iwd{
+    width: 500px;
+    height: 350px;;
+}
+
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+footer .social-icons a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+}
+
+footer .social-icons a:hover {
+    color: #ff6f61;
+}
+
+
+
+#scrollToTopBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+      display: none; 
+      background: #640ac4;
+        background: -webkit-linear-gradient(to right, #640ac4, #b16ff8);
+        background: linear-gradient(to right, #640ac4, #b16ff8)
+    }
+
+@media (max-width: 992px) {
+        header {
+            flex-direction: column;
+            text-align: center;
+            padding: 50px 20px;
+            height: auto;
+        }
+        #headerpic {
+            width: 300px;
+            margin: 20px 0 0;
+        }
+        header h1 {
+            font-size: 1.5rem; 
+            margin-bottom: 20px; 
+        }
+        .navbar-nav .nav-link {
+            margin-right: 20px;
+        }
+        #logo {
+            width: 150px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        header h1 {
+            font-size: 1.3rem; 
+        }
+        .card, .cardf, .cards {
+            margin: 10px;
+        }
+        #iwd {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    @media (max-width: 576px) {
+        footer p, footer .social-icons a {
+            font-size: 14px;
+        }
+        header h1 {
+            font-size: 1.2rem; 
+        }
+        header .btn {
+            padding: 8px 16px;
+        }
+    }
