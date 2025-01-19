@@ -15,10 +15,10 @@ document.addEventListener("DOMContentLoaded", function () {
   cards.forEach((card) => observer.observe(card));
 });
 function navigateToLogin() {
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 function navigateToPage() {
-  window.location.href = "sing-up.html";
+  window.location.href = "signup.html";
 }
 let scrollToTopBtn = document.getElementById("scrollToTopBtn");
 
