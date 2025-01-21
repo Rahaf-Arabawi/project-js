@@ -1,0 +1,21 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.gradient-custom-3 {
+    background: #640ac4;
+    background: -webkit-linear-gradient(to right, #640ac4, #b16ff8);
+    background: linear-gradient(to right, #640ac4, #b16ff8);
+}
+
+.gradient-custom-4 {
+    background: #640ac4;
+    background: -webkit-linear-gradient(to right, #640ac4, #b16ff8);
+    background: linear-gradient(to right, #640ac4, #b16ff8);
+}
+
+.text-danger {
+    display: none; 
+}
